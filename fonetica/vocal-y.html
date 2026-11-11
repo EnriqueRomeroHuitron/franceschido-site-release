@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Vocal [y] - Las Vocales del Francés</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fecaca 100%);
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            background: #f3f4f6;
+            border: none;
+            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: #1f2937;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+            background: #e5e7eb;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .intro {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .intro h2 {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .intro p {
+            color: #6b7280;
+            line-height: 1.6;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .highlight-box {
+            background: #f3f4f6;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0.5rem;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .section h3 {
+            font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .section p {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .examples {
+            background: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .examples p {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* Reproductor de audio personalizado */
+        .audio-player {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .play-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+
+        .play-btn.playing {
+            background: #ef4444;
+        }
+
+        .progress-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .audio-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .practice-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .practice-box h3 {
+            font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .practice-box p {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .practice-box ul {
+            margin-left: 1.5rem;
+            color: #4b5563;
+        }
+
+        .practice-box li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="back-btn">←</a>
+            <h1>Vocal [y]</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="intro">
+            <h2>🎧 El sonido [y] de la vocal "u"</h2>
+            <p>Les comparto el trapecio vocálico con los 3 sonidos:</p>
+            <div class="highlight-box">
+                <p>🔹 <strong>[i]</strong> → sonido de referencia, posición de la lengua</p>
+                <p>🔹 <strong>[y]</strong> → sonido que no existe en español (letra "u" en francés)</p>
+                <p>🔹 <strong>[u]</strong> → sonido de confusión, nuestra "u" del español (combinación "ou" en francés)</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>👄 Gesto articulatorio</h3>
+            <p>Aquí te explico cómo producir el sonido:</p>
+            
+            <div class="audio-player">
+                <div class="audio-label">🔊 Explicación del gesto articulatorio</div>
+                <div class="audio-controls">
+                    <button class="play-btn" onclick="toggleAudio('audio1', this)">▶</button>
+                    <div class="progress-container">
+                        <div class="progress-bar" onclick="seekAudio('audio1', event)">
+                            <div class="progress-fill" id="progress1"></div>
+                        </div>
+                        <div class="time-display">
+                            <span id="current1">0:00</span>
+                            <span id="duration1">0:00</span>
+                        </div>
+                    </div>
+                </div>
+                <audio id="audio1" src="audios/gesto-articulatorio.mp3" preload="metadata"></audio>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🔤 Sílabas</h3>
+            <p>Atención: no son palabras, son sílabas.</p>
+            <p>Estas sílabas pueden aparecer al inicio, en medio o al final de una palabra.</p>
+            <div class="examples">
+                <p>[py] – [sy] – [ly] – [dyʁ] – [myʁ] – [kyʁ]</p>
+            </div>
+            <p style="font-size: 0.9rem; color: #6b7280;">Puedes crear tus propias combinaciones cambiando la consonante inicial o agregando una sílaba final.</p>
+            
+            <div class="audio-player">
+                <div class="audio-label">🔊 Escuchar sílabas</div>
+                <div class="audio-controls">
+                    <button class="play-btn" onclick="toggleAudio('audio2', this)">▶</button>
+                    <div class="progress-container">
+                        <div class="progress-bar" onclick="seekAudio('audio2', event)">
+                            <div class="progress-fill" id="progress2"></div>
+                        </div>
+                        <div class="time-display">
+                            <span id="current2">0:00</span>
+                            <span id="duration2">0:00</span>
+                        </div>
+                    </div>
+                </div>
+                <audio id="audio2" src="audios/silabas.mp3" preload="metadata"></audio>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>⚠️ Transición desde [i]</h3>
+            <p>Si te parece difícil ir directo al sonido [y], pasa primero por el sonido [i].</p>
+            <div class="examples">
+                <p>[pi] → [py]</p>
+                <p>[si] → [sy]</p>
+                <p>[li] → [ly]</p>
+                <p>[diʁ] → [dyʁ]</p>
+                <p>[miʁ] → [myʁ]</p>
+                <p>[kiʁ] → [kyʁ]</p>
+            </div>
+            
+            <div class="audio-player">
+                <div class="audio-label">🔊 Escuchar transición</div>
+                <div class="audio-controls">
+                    <button class="play-btn" onclick="toggleAudio('audio3', this)">▶</button>
+                    <div class="progress-container">
+                        <div class="progress-bar" onclick="seekAudio('audio3', event)">
+                            <div class="progress-fill" id="progress3"></div>
+                        </div>
+                        <div class="time-display">
+                            <span id="current3">0:00</span>
+                            <span id="duration3">0:00</span>
+                        </div>
+                    </div>
+                </div>
+                <audio id="audio3" src="audios/transicion.mp3" preload="metadata"></audio>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🪞 Palabras que contrastan solo por la vocal</h3>
+            <div class="examples">
+                <p>sur – sourd</p>
+                <p>rue – roue</p>
+                <p>vu – vous</p>
+            </div>
+            
+            <div class="audio-player">
+                <div class="audio-label">🔊 Escuchar contrastes</div>
+                <div class="audio-controls">
+                    <button class="play-btn" onclick="toggleAudio('audio4', this)">▶</button>
+                    <div class="progress-container">
+                        <div class="progress-bar" onclick="seekAudio('audio4', event)">
+                            <div class="progress-fill" id="progress4"></div>
+                        </div>
+                        <div class="time-display">
+                            <span id="current4">0:00</span>
+                            <span id="duration4">0:00</span>
+                        </div>
+                    </div>
+                </div>
+                <audio id="audio4" src="audios/contrastes.mp3" preload="metadata"></audio>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>💡 Palabras que contienen las dos vocales</h3>
+            <div class="examples">
+                <p>surtout</p>
+                <p>voulu</p>
+                <p>pourvu</p>
+            </div>
+            
+            <div class="audio-player">
+                <div class="audio-label">🔊 Escuchar palabras</div>
+                <div class="audio-controls">
+                    <button class="play-btn" onclick="toggleAudio('audio5', this)">▶</button>
+                    <div class="progress-container">
+                        <div class="progress-bar" onclick="seekAudio('audio5', event)">
+                            <div class="progress-fill" id="progress5"></div>
+                        </div>
+                        <div class="time-display">
+                            <span id="current5">0:00</span>
+                            <span id="duration5">0:00</span>
+                        </div>
+                    </div>
+                </div>
+                <audio id="audio5" src="audios/palabras-dobles.mp3" preload="metadata"></audio>
+            </div>
+        </div>
+
+        <div class="practice-box">
+            <h3>🗣️ Ahora es tu turno</h3>
+            <p>Escucha, repite, practica y observa en tu día a día:</p>
+            <ul>
+                <li>Palabras que contengan el sonido [y]</li>
+                <li>Otras sílabas diferentes a las del ejemplo</li>
+                <li>Palabras que cambian de significado si las pronunciamos con [y] o [u]</li>
+                <li>Palabras que contienen ambos sonidos</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar todos los audios
+        document.querySelectorAll('audio').forEach(audio => {
+            audio.addEventListener('loadedmetadata', function() {
+                const id = this.id.replace('audio', '');
+                updateDuration(id, this.duration);
+            });
+
+            audio.addEventListener('timeupdate', function() {
+                const id = this.id.replace('audio', '');
+                updateProgress(id, this.currentTime, this.duration);
+            });
+
+            audio.addEventListener('ended', function() {
+                const id = this.id.replace('audio', '');
+                const btn = document.querySelector(`button[onclick*="${this.id}"]`);
+                btn.textContent = '▶';
+                btn.classList.remove('playing');
+            });
+        });
+
+        function toggleAudio(audioId, btn) {
+            const audio = document.getElementById(audioId);
+            
+            // Pausar todos los otros audios
+            document.querySelectorAll('audio').forEach(a => {
+                if (a.id !== audioId && !a.paused) {
+                    a.pause();
+                    const otherId = a.id.replace('audio', '');
+                    const otherBtn = document.querySelector(`button[onclick*="${a.id}"]`);
+                    otherBtn.textContent = '▶';
+                    otherBtn.classList.remove('playing');
+                }
+            });
+
+            if (audio.paused) {
+                audio.play();
+                btn.textContent = '⏸';
+                btn.classList.add('playing');
+            } else {
+                audio.pause();
+                btn.textContent = '▶';
+                btn.classList.remove('playing');
+            }
+        }
+
+        function seekAudio(audioId, event) {
+            const audio = document.getElementById(audioId);
+            const progressBar = event.currentTarget;
+            const clickX = event.offsetX;
+            const width = progressBar.offsetWidth;
+            const duration = audio.duration;
+            audio.currentTime = (clickX / width) * duration;
+        }
+
+        function updateProgress(id, current, duration) {
+            const progressFill = document.getElementById('progress' + id);
+            const currentSpan = document.getElementById('current' + id);
+            
+            const percentage = (current / duration) * 100;
+            progressFill.style.width = percentage + '%';
+            currentSpan.textContent = formatTime(current);
+        }
+
+        function updateDuration(id, duration) {
+            const durationSpan = document.getElementById('duration' + id);
+            durationSpan.textContent = formatTime(duration);
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return mins + ':' + (secs < 10 ? '0' : '') + secs;
+        }
+    </script>
+</body>
+</html>

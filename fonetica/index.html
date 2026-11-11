@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Las Vocales del Francés - Rombo Fonético</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fecaca 100%);
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: clamp(0.9rem, 3vw, 1.1rem);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .instructions {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .instructions h2 {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .instructions p {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .info-box {
+            background: #dbeafe;
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .info-box span {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .rombo-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .rombo-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%;
+            margin-bottom: 1rem;
+        }
+
+        .rombo-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .vowel-btn {
+            position: absolute;
+            width: clamp(36px, 8vw, 48px);
+            height: clamp(36px, 8vw, 48px);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #d1d5db;
+            font-weight: bold;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            cursor: not-allowed;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            opacity: 0.6;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .vowel-btn.active {
+            border-color: #60a5fa;
+            cursor: pointer;
+            opacity: 1;
+            background: white;
+        }
+
+        .vowel-btn.active:active {
+            transform: scale(0.95);
+        }
+
+        @media (hover: hover) {
+            .vowel-btn.active:hover {
+                transform: scale(1.2);
+                background: #3b82f6;
+                color: white;
+                box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+            }
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid;
+            flex-shrink: 0;
+        }
+
+        .legend-dot.available {
+            background: #60a5fa;
+            border-color: #3b82f6;
+        }
+
+        .legend-dot.coming-soon {
+            background: #e5e7eb;
+            border-color: #d1d5db;
+        }
+
+        .about {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .about h2 {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .about p {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        /* Mejoras táctiles para móvil */
+        @media (max-width: 768px) {
+            .vowel-btn {
+                min-width: 44px;
+                min-height: 44px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Las Vocales del Francés</h1>
+        <p class="subtitle">Rombo Fonético Interactivo</p>
+    </header>
+
+    <div class="container">
+        <div class="instructions">
+            <h2>📚 Instrucciones</h2>
+            <p>Toca cualquier vocal del rombo fonético para ver su explicación completa, ejemplos y escuchar los audios de pronunciación.</p>
+            <div class="info-box">
+                <span>ℹ️</span>
+                <div>
+                    <p><strong>Vocales disponibles:</strong> [i], [y], [ø], [u]</p>
+                    <p style="margin-bottom: 0;">Las demás vocales se agregarán cuando la profesora envíe el material.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="rombo-container">
+            <div class="rombo-wrapper">
+                <img src="rombo-fonetico.png" alt="Rombo Fonético" class="rombo-image">
+                
+                <!-- Botones de vocales -->
+                <a href="vocal-i.html" class="vowel-btn active" style="top: 12%; left: 15%;" title="Ver [i]">
+                    <span style="color: #15803d;">[i]</span>
+                </a>
+                <a href="vocal-y.html" class="vowel-btn active" style="top: 12%; left: 35%;" title="Ver [y]">
+                    <span style="color: #15803d;">[y]</span>
+                </a>
+                <a href="vocal-u.html" class="vowel-btn active" style="top: 12%; right: 15%;" title="Ver [u]">
+                    <span style="color: #15803d;">[u]</span>
+                </a>
+                
+                <button class="vowel-btn" style="top: 28%; left: 18%;" title="Próximamente">
+                    <span style="color: #15803d;">[e]</span>
+                </button>
+                <a href="vocal-oe.html" class="vowel-btn active" style="top: 28%; left: 35%;" title="Ver [ø]">
+                    <span style="color: #15803d;">[ø]</span>
+                </a>
+                <button class="vowel-btn" style="top: 28%; right: 18%;" title="Próximamente">
+                    <span style="color: #15803d;">[o]</span>
+                </button>
+                
+                <button class="vowel-btn" style="top: 42%; left: 50%; transform: translateX(-50%);" title="Próximamente">
+                    <span style="color: #15803d;">[ə]</span>
+                </button>
+                
+                <button class="vowel-btn" style="top: 56%; left: 20%;" title="Próximamente">
+                    <span style="color: #15803d;">[ɛ]</span>
+                </button>
+                <button class="vowel-btn" style="top: 56%; left: 35%;" title="Próximamente">
+                    <span style="color: #15803d;">[œ]</span>
+                </button>
+                <button class="vowel-btn" style="top: 56%; right: 20%;" title="Próximamente">
+                    <span style="color: #15803d;">[ɔ]</span>
+                </button>
+                
+                <button class="vowel-btn" style="top: 70%; left: 22%;" title="Próximamente">
+                    <span style="color: #b91c1c;">[ɛ̃]</span>
+                </button>
+                <button class="vowel-btn" style="top: 70%; left: 35%;" title="Próximamente">
+                    <span style="color: #b91c1c;">[œ̃]</span>
+                </button>
+                <button class="vowel-btn" style="top: 70%; right: 22%;" title="Próximamente">
+                    <span style="color: #b91c1c;">[ɔ̃]</span>
+                </button>
+                
+                <button class="vowel-btn" style="top: 84%; left: 35%;" title="Próximamente">
+                    <span style="color: #15803d;">[a]</span>
+                </button>
+                <button class="vowel-btn" style="top: 84%; right: 35%;" title="Próximamente">
+                    <span style="color: #15803d;">[ɑ]</span>
+                </button>
+                <button class="vowel-btn" style="top: 95%; right: 30%;" title="Próximamente">
+                    <span style="color: #b91c1c;">[ã]</span>
+                </button>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-dot available"></div>
+                    <span>Disponible</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot coming-soon"></div>
+                    <span>Próximamente</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="about">
+            <h2>🎯 Sobre este proyecto</h2>
+            <p>Este sitio web interactivo te ayudará a aprender la pronunciación correcta de las vocales del francés. Cada vocal incluye explicaciones detalladas, ejemplos prácticos y audios grabados por tu profesora.</p>
+            <p>El contenido se irá actualizando conforme se reciban los materiales de las demás vocales.</p>
+        </div>
+    </div>
+</body>
+</html>

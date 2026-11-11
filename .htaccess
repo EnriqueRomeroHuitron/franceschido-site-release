@@ -1,0 +1,17 @@
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Canoniza el nuevo dominio sin www.
+  RewriteCond %{HTTP_HOST} ^www\.franceschido\.site$ [NC]
+  RewriteRule ^ https://franceschido.site%{REQUEST_URI} [R=301,L]
+  # Si el dominio anterior se renueva y apunta aquí, conserva sus enlaces.
+  RewriteCond %{HTTP_HOST} ^(?:www\.)?franceschido\.fun$ [NC]
+  RewriteRule ^ https://franceschido.site%{REQUEST_URI} [R=301,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+</IfModule>

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Práctica [ø] - 50 Palabras - Las Vocales del Francés</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fecaca 100%);
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            background: #f3f4f6;
+            border: none;
+            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: #1f2937;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+            background: #e5e7eb;
+        }
+
+        h1 {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .intro {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .intro h2 {
+            font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+            margin-bottom: 0.75rem;
+            color: #1f2937;
+        }
+
+        .intro p {
+            color: #6b7280;
+            line-height: 1.6;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+        }
+
+        .section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section h3 {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            margin-bottom: 1rem;
+            color: #1f2937;
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+        }
+
+        .words-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .words-table th {
+            background: #f3f4f6;
+            padding: 0.75rem;
+            text-align: left;
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+            color: #1f2937;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .words-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+            color: #4b5563;
+        }
+
+        .words-table tr:hover {
+            background: #f9fafb;
+        }
+
+        .phonetic {
+            font-family: 'Courier New', monospace;
+            color: #3b82f6;
+            font-weight: 500;
+        }
+
+        .audio-player-mini {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .play-btn-mini {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .play-btn-mini:active {
+            transform: scale(0.95);
+        }
+
+        .play-btn-mini.playing {
+            background: #ef4444;
+        }
+
+        .audio-label-mini {
+            flex: 1;
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .frases-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .frases-list li {
+            background: #f9fafb;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 8px;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .frase-fr {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+            font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+        }
+
+        .frase-es {
+            color: #6b7280;
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+        }
+
+        .pares-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .par-card {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #e5e7eb;
+        }
+
+        .par-card .vowel-e {
+            color: #10b981;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .par-card .vowel-oe {
+            color: #3b82f6;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .par-card .phonetic-small {
+            font-family: 'Courier New', monospace;
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+            color: #6b7280;
+        }
+
+        .tip-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .tip-box p {
+            color: #1f2937;
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .tip-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 640px) {
+            .words-table {
+                font-size: 0.85rem;
+            }
+            
+            .words-table th,
+            .words-table td {
+                padding: 0.5rem 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="vocal-oe.html" class="back-btn">←</a>
+            <h1>Práctica [ø] - 50 Palabras</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="intro">
+            <h2>✅ Lista de 50 palabras con [ø]</h2>
+            <p>Escucha cada grupo de palabras y practica la pronunciación del sonido [ø]</p>
+        </div>
+
+        <!-- Palabras 1-10 -->
+        <div class="section">
+            <h3>📚 Palabras 1-10</h3>
+            <div class="audio-player-mini">
+                <button class="play-btn-mini" onclick="toggleAudioMini('audio1', this)">▶</button>
+                <span class="audio-label-mini">🔊 Escuchar palabras 1-10</span>
+            </div>
+            <audio id="audio1" src="audios/practica-oe/palabras-01-10.mp3" preload="metadata"></audio>
+            
+            <table class="words-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Palabra</th>
+                        <th>Fonética</th>
+                        <th>Significado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td><strong>deux</strong></td><td class="phonetic">[dø]</td><td>dos</td></tr>
+                    <tr><td>2</td><td><strong>bleu</strong></td><td class="phonetic">[blø]</td><td>azul</td></tr>
+                    <tr><td>3</td><td><strong>feu</strong></td><td class="phonetic">[fø]</td><td>fuego</td></tr>
+                    <tr><td>4</td><td><strong>vœu</strong></td><td class="phonetic">[vø]</td><td>deseo</td></tr>
+                    <tr><td>5</td><td><strong>nœud</strong></td><td class="phonetic">[nø]</td><td>nudo</td></tr>
+                    <tr><td>6</td><td><strong>œuf</strong></td><td class="phonetic">[œf]</td><td>huevo</td></tr>
+                    <tr><td>7</td><td><strong>œuvre</strong></td><td class="phonetic">[œvʁ]</td><td>obra</td></tr>
+                    <tr><td>8</td><td><strong>œil</strong></td><td class="phonetic">[œj]</td><td>ojo</td></tr>
+                    <tr><td>9</td><td><strong>heureux</strong></td><td class="phonetic">[øʁø]</td><td>feliz</td></tr>
+                    <tr><td>10</td><td><strong>malheureux</strong></td><td class="phonetic">[maløʁø]</td><td>infeliz</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Palabras 11-20 -->
+        <div class="section">
+            <h3>📚 Palabras 11-20</h3>
+            <div class="audio-player-mini">
+                <button class="play-btn-mini" onclick="toggleAudioMini('audio2', this)">▶</button>
+                <span class="audio-label-mini">🔊 Escuchar palabras 11-20</span>
+            </div>
+            <audio id="audio2" src="audios/practica-oe/palabras-11-20.mp3" preload="metadata"></audio>
+            
+            <table class="words-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Palabra</th>
+                        <th>Fonética</th>
+                        <th>Significado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>11</td><td><strong>fameux</strong></td><td class="phonetic">[famø]</td><td>famoso</td></tr>
+                    <tr><td>12</td><td><strong>curieux</strong></td><td class="phonetic">[kyʁjø]</td><td>curioso</td></tr>
+                    <tr><td>13</td><td><strong>sérieux</strong></td><td class="phonetic">[seʁjø]</td><td>serio</td></tr>
+                    <tr><td>14</td><td><strong>nerveux</strong></td><td class="phonetic">[nɛʁvø]</td><td>nervioso</td></tr>
+                    <tr><td>15</td><td><strong>joyeux</strong></td><td class="phonetic">[ʒwajø]</td><td>alegre</td></tr>
+                    <tr><td>16</td><td><strong>douteux</strong></td><td class="phonetic">[dutø]</td><td>dudoso</td></tr>
+                    <tr><td>17</td><td><strong>honteux</strong></td><td class="phonetic">[ɔ̃tø]</td><td>vergonzoso</td></tr>
+                    <tr><td>18</td><td><strong>peureux</strong></td><td class="phonetic">[pøʁø]</td><td>miedoso</td></tr>
+                    <tr><td>19</td><td><strong>cheveux</strong></td><td class="phonetic">[ʃøvæ]</td><td>cabellos</td></tr>
+                    <tr><td>20</td><td><strong>feutre</strong></td><td class="phonetic">[føtʁ]</td><td>fieltro / marcador</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Palabras 21-30 -->
+        <div class="section">
+            <h3>📚 Palabras 21-30</h3>
+            <div class="audio-player-mini">
+                <button class="play-btn-mini" onclick="toggleAudioMini('audio3', this)">▶</button>
+                <span class="audio-label-mini">🔊 Escuchar palabras 21-30</span>
+            </div>
+            <audio id="audio3" src="audios/practica-oe/palabras-21-30.mp3" preload="metadata"></audio>
+            
+            <table class="words-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Palabra</th>
+                        <th>Fonética</th>
+                        <th>Significado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>21</td><td><strong>feuillet</strong></td><td class="phonetic">[fœjɛ]</td><td>hoja</td></tr>
+                    <tr><td>22</td><td><strong>feux</strong></td><td class="phonetic">[fø]</td><td>fuegos</td></tr>
+                    <tr><td>23</td><td><strong>monsieur</strong></td><td class="phonetic">[məsjø]</td><td>señor</td></tr>
+                    <tr><td>24</td><td><strong>milieu</strong></td><td class="phonetic">[miljø]</td><td>medio</td></tr>
+                    <tr><td>25</td><td><strong>lieu</strong></td><td class="phonetic">[ljø]</td><td>lugar</td></tr>
+                    <tr><td>26</td><td><strong>mœurs</strong></td><td class="phonetic">[mœʁ]</td><td>costumbres</td></tr>
+                    <tr><td>27</td><td><strong>vœux</strong></td><td class="phonetic">[vø]</td><td>deseos</td></tr>
+                    <tr><td>28</td><td><strong>œuvrer</strong></td><td class="phonetic">[œvʁe]</td><td>obrar / trabajar</td></tr>
+                    <tr><td>29</td><td><strong>œillet</strong></td><td class="phonetic">[œjɛ]</td><td>clavel</td></tr>
+                    <tr><td>30</td><td><strong>œsophage</strong></td><td class="phonetic">[ezɔfaʒ]</td><td>esófago</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Palabras 31-40 -->
+        <div class="section">
+            <h3>📚 Palabras 31-40 (Tipos de huevos)</h3>
+            <div class="audio-player-mini">
+                <button class="play-btn-mini" onclick="toggleAudioMini('audio4', this)">▶</button>
+                <span class="audio-label-mini">🔊 Escuchar palabras 31-40</span>
+            </div>
+            <audio id="audio4" src="audios/practica-oe/palabras-31-40.mp3" preload="metadata"></audio>
+            
+            <table class="words-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Palabra</th>
+                        <th>Fonética</th>
+                        <th>Significado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>31</td><td><strong>œuf dur</strong></td><td class="phonetic">[œf dyʁ]</td><td>huevo duro</td></tr>
+                    <tr><td>32</td><td><strong>œuf brouillé</strong></td><td class="phonetic">[œf bʁuje]</td><td>huevo revuelto</td></tr>
+                    <tr><td>33</td><td><strong>œuf poché</strong></td><td class="phonetic">[œf pɔʃe]</td><td>huevo escalfado</td></tr>
+                    <tr><td>34</td><td><strong>œuf à la coque</strong></td><td class="phonetic">[œf a la kɔk]</td><td>huevo pasado por agua</td></tr>
+                    <tr><td>35</td><td><strong>œuf mollet</strong></td><td class="phonetic">[œf mɔlɛ]</td><td>huevo tibio</td></tr>
+                    <tr><td>36</td><td><strong>œuf plat</strong></td><td class="phonetic">[œf pla]</td><td>huevo frito</td></tr>
+                    <tr><td>37</td><td><strong>œuf mayonnaise</strong></td><td class="phonetic">[œf majɔnɛz]</td><td>huevo con mayonesa</td></tr>
+                    <tr><td>38</td><td><strong>feuilleté</strong></td><td class="phonetic">[fœjtɛ]</td><td>hojaldre</td></tr>
+                    <tr><td>39</td><td><strong>feutré</strong></td><td class="phonetic">[føtʁe]</td><td>afelpado</td></tr>
+                    <tr><td>40</td><td><strong>œuf mimosa</strong></td><td class="phonetic">[œf mimɔza]</td><td>huevo mimosa</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Palabras 41-50 -->
+        <div class="section">
+            <h3>📚 Palabras 41-50</h3>
+            <div class="audio-player-mini">
+                <button class="play-btn-mini" onclick="toggleAudioMini('audio5', this)">▶</button>
+                <span class="audio-label-mini">🔊 Escuchar palabras 41-50</span>
+            </div>
+            <audio id="audio5" src="audios/practica-oe/palabras-41-50.mp3" preload="metadata"></audio>
+            
+            <table class="words-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Palabra</th>
+                        <th>Fonética</th>
+                        <th>Significado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>41</td><td><strong>œuf bénédicte</strong></td><td class="phonetic">[œf benedikt]</td><td>huevo benedictino</td></tr>
+                    <tr><td>42</td><td><strong>œuf cocotte</strong></td><td class="phonetic">[œf kɔkɔt]</td><td>huevo al horno</td></tr>
+                    <tr><td>43</td><td><strong>œuf en neige</strong></td><td class="phonetic">[œf ɑ̃ nɛʒ]</td><td>clara montada</td></tr>
+                    <tr><td>44</td><td><strong>œuf de Pâques</strong></td><td class="phonetic">[œf də pak]</td><td>huevo de Pascua</td></tr>
+                    <tr><td>45</td><td><strong>œuf de caille</strong></td><td class="phonetic">[œf də kaj]</td><td>huevo de codorniz</td></tr>
+                    <tr><td>46</td><td><strong>œuf de poule</strong></td><td class="phonetic">[œf də pul]</td><td>huevo de gallina</td></tr>
+                    <tr><td>47</td><td><strong>œuf de canard</strong></td><td class="phonetic">[œf də kanaʁ]</td><td>huevo de pato</td></tr>
+                    <tr><td>48</td><td><strong>œuf de poisson</strong></td><td class="phonetic">[œf də pwasɔ̃]</td><td>hueva</td></tr>
+                    <tr><td>49</td><td><strong>feutre gris</strong></td><td class="phonetic">[føtʁ gʁi]</td><td>marcador gris</td></tr>
+                    <tr><td>50</td><td><strong>feu rouge</strong></td><td class="phonetic">[fø ʁuʒ]</td><td>semáforo rojo</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Frases de práctica -->
+        <div class="section">
+            <h3>✅ Frases cortas para practicar en contexto</h3>
+            
+            <div class="audio-player-mini">
+                <button class="play-btn-mini" onclick="toggleAudioMini('audio6', this)">▶</button>
+                <span class="audio-label-mini">🔊 Escuchar frases 1-5</span>
+            </div>
+            <audio id="audio6" src="audios/practica-oe/frases-01-05.mp3" preload="metadata"></audio>
+            
+            <ul class="frases-list">
+                <li>
+                    <div class="frase-fr">1. J'ai deux livres.</div>
+                    <div class="frase-es">(Tengo dos libros.)</div>
+                </li>
+                <li>
+                    <div class="frase-fr">2. Le ciel est bleu.</div>
+                    <div class="frase-es">(El cielo es azul.)</div>
+                </li>
+                <li>
+                    <div class="frase-fr">3. Il y a du feu dans la cheminée.</div>
+                    <div class="frase-es">(Hay fuego en la chimenea.)</div>
+                </li>
+                <li>
+                    <div class="frase-fr">4. Je fais un vœu.</div>
+                    <div class="frase-es">(Pido un deseo.)</div>
+                </li>
+                <li>
+                    <div class="frase-fr">5. Le nœud est serré.</div>
+                    <div class="frase-es">(El nudo está apretado.)</div>
+                </li>
+            </ul>
+
+            <div class="audio-player-mini" style="margin-top: 1.5rem;">
+                <button class="play-btn-mini" onclick="toggleAudioMini('audio7', this)">▶</button>
+                <span class="audio-label-mini">🔊 Escuchar frases 6-10</span>
+            </div>
+            <audio id="audio7" src="audios/practica-oe/frases-06-10.mp3" preload="metadata"></audio>
+            
+            <ul class="frases-list">
+                <li>
+                    <div class="frase-fr">6. L'œuf est sur la table.</div>
+                    <div class="frase-es">(El huevo está sobre la mesa.)</div>
+                </li>
+                <li>
+                    <div class="frase-fr">7. Cette œuvre est célèbre.</div>
+                    <div class="frase-es">(Esta obra es famosa.)</div>
+                </li>
+                <li>
+                    <div class="frase-fr">8. Il est très heureux aujourd'hui.</div>
+                    <div class="frase-es">(Está muy feliz hoy.)</div>
+                </li>
+                <li>
+                    <div class="frase-fr">9. Elle est curieuse de savoir.</div>
+                    <div class="frase-es">(Ella tiene curiosidad por saber.)</div>
+                </li>
+                <li>
+                    <div class="frase-fr">10. Le feutre est noir.</div>
+                    <div class="frase-es">(El marcador es negro.)</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Pares mínimos -->
+        <div class="section">
+            <h3>✅ Ejercicio de pares mínimos ([e] vs [ø])</h3>
+            
+            <div class="audio-player-mini">
+                <button class="play-btn-mini" onclick="toggleAudioMini('audio8', this)">▶</button>
+                <span class="audio-label-mini">🔊 Escuchar pares mínimos</span>
+            </div>
+            <audio id="audio8" src="audios/practica-oe/pares-minimos.mp3" preload="metadata"></audio>
+            
+            <div class="pares-grid">
+                <div class="par-card">
+                    <div class="vowel-e">ces</div>
+                    <div class="phonetic-small">[se]</div>
+                    <div style="margin: 0.5rem 0; color: #9ca3af;">vs</div>
+                    <div class="vowel-oe">ceux</div>
+                    <div class="phonetic-small">[sø]</div>
+                </div>
+                <div class="par-card">
+                    <div class="vowel-e">fée</div>
+                    <div class="phonetic-small">[fe]</div>
+                    <div style="margin: 0.5rem 0; color: #9ca3af;">vs</div>
+                    <div class="vowel-oe">feu</div>
+                    <div class="phonetic-small">[fø]</div>
+                </div>
+                <div class="par-card">
+                    <div class="vowel-e">nez</div>
+                    <div class="phonetic-small">[ne]</div>
+                    <div style="margin: 0.5rem 0; color: #9ca3af;">vs</div>
+                    <div class="vowel-oe">nœud</div>
+                    <div class="phonetic-small">[nø]</div>
+                </div>
+                <div class="par-card">
+                    <div class="vowel-e">blé</div>
+                    <div class="phonetic-small">[ble]</div>
+                    <div style="margin: 0.5rem 0; color: #9ca3af;">vs</div>
+                    <div class="vowel-oe">bleu</div>
+                    <div class="phonetic-small">[blø]</div>
+                </div>
+                <div class="par-card">
+                    <div class="vowel-e">pré</div>
+                    <div class="phonetic-small">[pʁe]</div>
+                    <div style="margin: 0.5rem 0; color: #9ca3af;">vs</div>
+                    <div class="vowel-oe">peu</div>
+                    <div class="phonetic-small">[pø]</div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <p><strong>👉 Cómo practicar:</strong></p>
+                <p>• Pronuncia primero la palabra con [e], luego la de [ø]</p>
+                <p>• Haz la transición: [se] → [sø], [fe] → [fø]</p>
+                <p>• Mantén la lengua en posición de [e] pero redondea los labios para [ø]</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleAudioMini(audioId, btn) {
+            const audio = document.getElementById(audioId);
+            
+            // Pausar todos los otros audios
+            document.querySelectorAll('audio').forEach(a => {
+                if (a.id !== audioId && !a.paused) {
+                    a.pause();
+                    a.currentTime = 0;
+                    const otherBtn = document.querySelector(`button[onclick*="${a.id}"]`);
+                    if (otherBtn) {
+                        otherBtn.textContent = '▶';
+                        otherBtn.classList.remove('playing');
+                    }
+                }
+            });
+
+            if (audio.paused) {
+                audio.play();
+                btn.textContent = '⏸';
+                btn.classList.add('playing');
+            } else {
+                audio.pause();
+                btn.textContent = '▶';
+                btn.classList.remove('playing');
+            }
+        }
+
+        // Reset button when audio ends
+        document.querySelectorAll('audio').forEach(audio => {
+            audio.addEventListener('ended', function() {
+                const btn = document.querySelector(`button[onclick*="${this.id}"]`);
+                if (btn) {
+                    btn.textContent = '▶';
+                    btn.classList.remove('playing');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

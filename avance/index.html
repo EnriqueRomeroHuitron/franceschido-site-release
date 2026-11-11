@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b1624">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Mi avance · Plan TCF Canada</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Figtree:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="styles.css?v=plan-20261022">
+  <script src="app.js?v=plan-20261022" defer></script>
+</head>
+<body>
+  <div class="app">
+    <header class="apphead">
+      <a href="/">← Portal de francés</a>
+      <button type="button" id="share-link" hidden>Conectar otro dispositivo</button>
+    </header>
+    <section class="card linkpanel" id="link-panel" hidden>
+      <h2>Tu enlace personal</h2>
+      <p class="access-note">Ábrelo una vez en tu celular y en tu computadora. Cada navegador recordará el acceso. Quien tenga este enlace puede consultar y modificar tu registro: no lo compartas.</p>
+      <input class="private-link" id="private-link" type="url" readonly aria-label="Enlace privado para otro dispositivo">
+      <button type="button" id="copy-link">Copiar enlace</button>
+    </section>
+    <p class="access-note storage-warning" id="storage-warning" hidden>Este navegador no permite guardar datos locales. Mantén tu enlace privado para volver a entrar; sin conexión, no cierres la página hasta que aparezca “Guardado en Hostinger”.</p>
+    <div class="app" id="app"></div>
+  </div>
+  <nav class="tabs" aria-label="Secciones"><div>
+    <button type="button" data-tab="hoy" id="tab-hoy">Hoy</button>
+    <button type="button" data-tab="progreso" id="tab-progreso">Progreso</button>
+  </div></nav>
+</body>
+</html>
